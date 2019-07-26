@@ -7,69 +7,90 @@ Copyright (c) 2019 by anonymous (http://jsbin.com/cijusazoko/15/edit)
 
 Released under the MIT license: http://jsbin.mit-license.org
 -->
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex" />
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
-  
-  <script src="https://unpkg.com/expect@%3C21/umd/expect.min.js"></script>
-  <script src="https://wzrd.in/standalone/deep-freeze@latest"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>JS Bin</title>
 
-  <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-  
+    <script src="https://unpkg.com/expect@%3C21/umd/expect.min.js"></script>
+    <script src="https://wzrd.in/standalone/deep-freeze@latest"></script>
 
+    <link
+      href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <script id="jsbin-javascript">
+      const addCounter = list => {
+        return list.concat([0]);
+      };
 
-</head>
-<body>
+      const removeCounter = (list, index) => {
+        //return list.slice(0,index).concat(list.slice(index+1));
+        return [...list.slice(0, index), ...list.slice(index + 1)];
+      };
 
-<script id="jsbin-javascript">
-const addCounter = (list) =>{
-  return list.concat([0]);
-};
+      const incrementCounter = (list, index) => {
+        //return list.slice(0,index).concat([list[index]+1]).concat(list.slice(index+1));
+        return [
+          ...list.slice(0, index),
+          list[index] + 1,
+          ...list.slice(index + 1)
+        ];
+      };
 
-const removeCounter = (list,index) =>{
-  //return list.slice(0,index).concat(list.slice(index+1));
-  return [...list.slice(0,index),...list.slice(index+1)];
-};
+      const toggleTodo = todo => {
+        return Object.assign({}, todo, {
+          completed: !todo.completed
+        });
+      };
 
-const incrementCounter = (list,index) =>{
-  //return list.slice(0,index).concat([list[index]+1]).concat(list.slice(index+1));
-  return [...list.slice(0,index),list[index] + 1, ...list.slice(index+1)];
-}
+      // test
+      const testAddCounter = () => {
+        const listBefore = [];
+        const listAfter = [0];
 
-const testAddCounter = () =>{
-  const listBefore = [];
-  const listAfter = [0];
-  
-  expect(
-  addCounter(listBefore)
-  ).toEqual(listAfter);
-};
+        expect(addCounter(listBefore)).toEqual(listAfter);
+      };
 
-const testRemoveCounter = () =>{
-  const listBefore = [0,10,20];
-  const listAfter = [0,20];
-  
-  expect(
-  removeCounter(listBefore,1)
-  ).toEqual(listAfter);
-}
+      const testRemoveCounter = () => {
+        const listBefore = [0, 10, 20];
+        const listAfter = [0, 20];
 
-const testIncrementCounter = () =>{
-   const listBefore = [0,10,20];
-  const listAfter = [0,11,20];
-  
-    expect(
-  incrementCounter(listBefore,1)
-  ).toEqual(listAfter);
-}
+        expect(removeCounter(listBefore, 1)).toEqual(listAfter);
+      };
 
-testAddCounter();
-testRemoveCounter();
-testIncrementCounter();
-console.log("it works");
-</script>
-</body>
+      const testIncrementCounter = () => {
+        const listBefore = [0, 10, 20];
+        const listAfter = [0, 11, 20];
+
+        expect(incrementCounter(listBefore, 1)).toEqual(listAfter);
+      };
+
+      const testToggleTodo = () => {
+        const todoBefore = {
+          id: 0,
+          text: "learn redux",
+          completed: false
+        };
+        const todoAfter = {
+          id: 0,
+          text: "learn redux",
+          completed: true
+        };
+
+        expect(toggleTodo(todoBefore)).toEqual(todoAfter);
+      };
+
+      testAddCounter();
+      testRemoveCounter();
+      testIncrementCounter();
+      testToggleTodo();
+      console.log("it works");
+    </script>
+  </body>
 </html>
