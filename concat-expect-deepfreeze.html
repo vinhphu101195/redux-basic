@@ -44,9 +44,16 @@ Released under the MIT license: http://jsbin.mit-license.org
       };
 
       const toggleTodo = todo => {
-        return Object.assign({}, todo, {
+        // ES6
+        // return Object.assign({}, todo, {
+        //   completed: !todo.completed
+        // });
+
+        // ES7
+        return {
+          ...todo,
           completed: !todo.completed
-        });
+        };
       };
 
       // test
