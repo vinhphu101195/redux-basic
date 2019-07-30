@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 const todo = (state, action) => {
   switch (action.type) {
@@ -50,29 +51,154 @@ export const todoApp = combineReducers({
   visibilityFilter
 });
 
-let nextTodoId = 0;
+const Link = ({ active, children, onClick }) => {
+  if (active) {
+    return <span>{children}</span>;
+  }
+  return (
+    <a
+      href="hello"
+      onClick={e => {
+        e.preventDefault();
+        onClick();
+      }}
+    >
+      {children}
+    </a>
+  );
+};
 
-export default class TodoApp extends Component {
+
+
+
+class FilterLink extends Component {
   render() {
+    const props = this.props;
+    const state = this.props.store.getState();
     return (
-      <div>
-        <button
-          onClick={() => {
-            store.dispatch({
-              type: "ADD_TODO",
-              text: "TEST",
-              id: nextTodoId++
-            });
-          }}
-        >
-          Add Todo
-        </button>
-        <ul>
-          {this.props.todos.map(todo => {
-            return <li key={todo.id}>{todo.text}</li>;
-          })}
-        </ul>
-      </div>
+      <Link
+        active={props.filter === state.visibilityFilter}
+        onClick={() =>
+          this.props.store.dispatch({
+            type: "SET_VISIBILITY_FILTER",
+            filter: props.filter
+          })
+        }
+      >
+        {props.children}
+      </Link>
     );
   }
+}
+
+const Footer = () => {
+  return (
+    <p>
+      Show:{" "}
+      <FilterLink filter="SHOW_ALL" store={this.props.store}>
+        All
+      </FilterLink>{" "}
+      <FilterLink filter="SHOW_ACTIVE" store={this.props.store}>
+        Active
+      </FilterLink>{" "}
+      <FilterLink filter="SHOW_COMPLETED" store={this.props.store}>
+        Completed
+      </FilterLink>
+    </p>
+  );
+};
+
+const Todo = ({ onClick, completed, text }) => {
+  return (
+    <li
+      onClick={onClick}
+      style={{
+        textDecoration: completed ? "line-through" : "none"
+      }}
+    >
+      {text}
+    </li>
+  );
+};
+
+const TodoList = ({ todos, onTodoClick }) => {
+  return (
+    <ul>
+      {todos.map(todo => {
+        return (
+          <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />
+        );
+      })}
+    </ul>
+  );
+};
+
+
+
+let nextTodoId = 0;
+let AddTodo = ({dispatch}) => {
+  let input;
+  return (
+    <div>
+      <input
+        ref={node => {
+          input = node;
+        }}
+      />
+      <button
+        onClick={() => {
+          dispatch({
+            type: "ADD_TODO",
+            id: nextTodoId++,
+            text: input.value
+          });
+          input.value = "";
+        }}
+      >
+        Add Todo
+      </button>
+    </div>
+  );
+  
+  const getVisibleTodos = (todos, filter) => {
+    switch (filter) {
+      case "SHOW_ALL":
+        return todos;
+      case "SHOW_COMPLETED":
+        return todos.filter(t => t.completed);
+      case "SHOW_ACTIVE":
+        return todos.filter(t => !t.completed);
+      default:
+        return todos;
+    }
+  };
+
+const mapStateToProps = state => {
+  return { todos: getVisibleTodos(state.todos, state.visibilityFilter) };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTodoClick: id => {
+      this.props.store.dispatch({
+        type: "TOGGLE_TODO",
+        id
+      });
+    }
+  };
+};
+
+const VisibleTodoList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoList);
+
+export default function TodoApp() {
+  return (
+    <div>
+      <AddTodo />
+      <VisibleTodoList />
+      <Footer />
+    </div>
+  );
 }
