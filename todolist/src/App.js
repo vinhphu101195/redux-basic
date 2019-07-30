@@ -46,10 +46,21 @@ const visibilityFilter = (state = "SHOW_ALL", action) => {
   }
 };
 
+
 export const todoApp = combineReducers({
   todos,
   visibilityFilter
 });
+
+
+let nextTodoId = 0;
+const addTodo = (text) =>{
+  return{
+    type: 'ADD_TODO',
+    id:nextTodoId++,
+    text: text
+  }
+}
 
 const Link = ({ active, children, onClick }) => {
   if (active) {
@@ -135,7 +146,7 @@ const TodoList = ({ todos, onTodoClick }) => {
 
 
 
-let nextTodoId = 0;
+
 let AddTodo = ({dispatch}) => {
   let input;
   return (
@@ -147,11 +158,7 @@ let AddTodo = ({dispatch}) => {
       />
       <button
         onClick={() => {
-          dispatch({
-            type: "ADD_TODO",
-            id: nextTodoId++,
-            text: input.value
-          });
+          dispatch(addTodo(input.value));
           input.value = "";
         }}
       >
@@ -159,7 +166,7 @@ let AddTodo = ({dispatch}) => {
       </button>
     </div>
   );
-  
+
   const getVisibleTodos = (todos, filter) => {
     switch (filter) {
       case "SHOW_ALL":
@@ -202,3 +209,4 @@ export default function TodoApp() {
     </div>
   );
 }
+
