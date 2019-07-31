@@ -16,8 +16,6 @@ class Addtodo extends Component {
     });
   };
   render() {
-    console.log(this.state.text);
-
     return (
       <div>
         <input
