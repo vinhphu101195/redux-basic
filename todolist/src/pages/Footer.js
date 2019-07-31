@@ -6,9 +6,10 @@ import { setVisibilityFilter } from "../action/index";
 class FilterLink extends Component {
   render() {
     const props = this.props;
+
     return (
       <Link
-        active={props.filter === this.props.visibilityFilter}
+        active={props.filter === props.visibilityFilter}
         onClick={() => this.props.onSetvisibility(props.filter)}
       >
         {props.children}
@@ -23,21 +24,21 @@ function Footer(props) {
       Show:{" "}
       <FilterLink
         filter="SHOW_ALL"
-        store={props.visibilityFilter}
+        visibilityFilter={props.visibilityFilter}
         onSetvisibility={props.onSetvisibility}
       >
         All
       </FilterLink>{" "}
       <FilterLink
         filter="SHOW_ACTIVE"
-        store={props.visibilityFilter}
+        visibilityFilter={props.visibilityFilter}
         onSetvisibility={props.onSetvisibility}
       >
         Active
       </FilterLink>{" "}
       <FilterLink
         filter="SHOW_COMPLETED"
-        store={props.visibilityFilter}
+        visibilityFilter={props.visibilityFilter}
         onSetvisibility={props.onSetvisibility}
       >
         Completed

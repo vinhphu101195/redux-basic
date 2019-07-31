@@ -17,8 +17,6 @@ const getVisibleTodos = (todos, filter) => {
 };
 
 function Todolist(props) {
-  console.log(props.todos);
-
   return (
     <ul>
       {getVisibleTodos(props.todos, props.visibilityFilter).map((todo, e) => {

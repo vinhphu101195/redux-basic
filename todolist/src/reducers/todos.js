@@ -10,8 +10,6 @@ const todo = (state, action) => {
       ];
     case "TOGGLE_TODO":
       if (state[0].id === action.id) {
-        console.log("vo roi");
-
         return { ...state, completed: !state.completed };
       } else {
         return state;
