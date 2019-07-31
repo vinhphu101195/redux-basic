@@ -1,19 +1,15 @@
 import React, { Component } from "react";
 import Link from "../components/Link";
+import { connect } from "react-redux";
+import { setVisibilityFilter } from "../action/index";
 
 class FilterLink extends Component {
   render() {
     const props = this.props;
-    const state = this.props.store.getState();
     return (
       <Link
-        active={props.filter === state.visibilityFilter}
-        onClick={() =>
-          this.props.store.dispatch({
-            type: "SET_VISIBILITY_FILTER",
-            filter: props.filter
-          })
-        }
+        active={props.filter === this.props.visibilityFilter}
+        onClick={() => this.props.onSetvisibility(props.filter)}
       >
         {props.children}
       </Link>
@@ -21,19 +17,50 @@ class FilterLink extends Component {
   }
 }
 
-export default function Footer() {
+function Footer(props) {
   return (
     <p>
       Show:{" "}
-      <FilterLink filter="SHOW_ALL" store={this.props.store}>
+      <FilterLink
+        filter="SHOW_ALL"
+        store={props.visibilityFilter}
+        onSetvisibility={props.onSetvisibility}
+      >
         All
       </FilterLink>{" "}
-      <FilterLink filter="SHOW_ACTIVE" store={this.props.store}>
+      <FilterLink
+        filter="SHOW_ACTIVE"
+        store={props.visibilityFilter}
+        onSetvisibility={props.onSetvisibility}
+      >
         Active
       </FilterLink>{" "}
-      <FilterLink filter="SHOW_COMPLETED" store={this.props.store}>
+      <FilterLink
+        filter="SHOW_COMPLETED"
+        store={props.visibilityFilter}
+        onSetvisibility={props.onSetvisibility}
+      >
         Completed
       </FilterLink>
     </p>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    visibilityFilter: state.visibilityFilter
+  };
+};
+
+const mapDispatchtoProps = (dispatch, props) => {
+  return {
+    onSetvisibility: filter => {
+      dispatch(setVisibilityFilter(filter));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchtoProps
+)(Footer);

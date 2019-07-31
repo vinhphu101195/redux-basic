@@ -1,7 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
+import { addTodo } from "../action/index";
 
-export default function Addtodo() {
-  let input;
+function Addtodo(props) {
+  let input = "";
+  console.log(input.value);
+
   return (
     <div>
       <input
@@ -11,7 +15,7 @@ export default function Addtodo() {
       />
       <button
         onClick={() => {
-          dispatch(addTodo(input.value));
+          props.onAddTodo(input.value);
           input.value = "";
         }}
       >
@@ -20,3 +24,22 @@ export default function Addtodo() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    todos: state.todos
+  };
+};
+
+const mapDispatchtoProps = (dispatch, props) => {
+  return {
+    onAddTodo: text => {
+      dispatch(addTodo(text));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchtoProps
+)(Addtodo);

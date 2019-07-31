@@ -6,7 +6,7 @@ export default function Link(props) {
   }
   return (
     <a
-      href="hello"
+      href="#a"
       onClick={e => {
         e.preventDefault();
         props.onClick();

@@ -1,5 +1,7 @@
 import React from "react";
 import Todo from "../components/todo";
+import { connect } from "react-redux";
+import { clickToggle } from "../action/index";
 
 const getVisibleTodos = (todos, filter) => {
   switch (filter) {
@@ -14,14 +16,38 @@ const getVisibleTodos = (todos, filter) => {
   }
 };
 
-export default function Todolist() {
+function Todolist(props) {
   return (
     <ul>
-      {todos.map(todo => {
+      {getVisibleTodos(props.todos, props.visibilityFilter).map(todo => {
         return (
-          <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />
+          <Todo
+            key={todo.id}
+            {...todo}
+            onClick={() => props.onTodoClick(todo.id)}
+          />
         );
       })}
     </ul>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    todos: state.todos,
+    visibilityFilter: state.visibilityFilter
+  };
+};
+
+const mapDispatchtoProps = (dispatch, props) => {
+  return {
+    onTodoClick: id => {
+      dispatch(clickToggle(id));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchtoProps
+)(Todolist);
