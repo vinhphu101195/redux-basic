@@ -4,10 +4,10 @@ import "./index.css";
 import TodoApp from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { createStore } from "redux";
-import todoApp from "./App";
 import { Provider } from "react-redux";
+import appReducers from "./reducers/index";
 
-var store = createStore(todoApp);
+var store = createStore(appReducers);
 
 ReactDOM.render(
   <Provider store={store}>
