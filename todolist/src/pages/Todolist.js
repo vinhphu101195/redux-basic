@@ -19,13 +19,9 @@ const getVisibleTodos = (todos, filter) => {
 function Todolist(props) {
   return (
     <ul>
-      {getVisibleTodos(props.todos, props.visibilityFilter).map(todo => {
+      {getVisibleTodos(props.todos, props.visibilityFilter).map((todo, e) => {
         return (
-          <Todo
-            key={todo.id}
-            {...todo}
-            onClick={() => props.onTodoClick(todo.id)}
-          />
+          <Todo key={e} {...todo} onClick={() => props.onTodoClick(todo.id)} />
         );
       })}
     </ul>
