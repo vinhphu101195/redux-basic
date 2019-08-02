@@ -6,12 +6,15 @@ import * as serviceWorker from "./serviceWorker";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import appReducers from "./reducers/index";
+import { BrowserRouter, Route } from "react-router-dom";
 
 var store = createStore(appReducers);
 
 ReactDOM.render(
   <Provider store={store}>
-    <TodoApp />
+    <BrowserRouter>
+      <Route path="/" component={TodoApp} />
+    </BrowserRouter>
   </Provider>,
   document.getElementById("root")
 );

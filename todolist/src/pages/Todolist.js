@@ -39,15 +39,15 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchtoProps = (dispatch, props) => {
-  return {
-    onTodoClick: id => {
-      dispatch(clickToggle(id));
-    }
-  };
-};
+// const mapDispatchtoProps = (dispatch, props) => {
+//   return {
+//     onTodoClick: id => {
+//       dispatch(clickToggle(id));
+//     }
+//   };
+// };
 
 export default connect(
   mapStateToProps,
-  mapDispatchtoProps
+  { onTodoClick: clickToggle }
 )(Todolist);
